@@ -4,10 +4,10 @@ function autoscroll () {
     scrollTop: $('#msg_list').get(0).scrollHeight}, 1);
 });};
 
-autoscroll();
+$('#chat-form').on('submit', function (event) {
+    event.preventDefault();
 
-$('#send_text').on('click',function () {
-    $.ajax({
+     $.ajax({
         url: '/proccess_msg/',
         type: 'POST',
         data: {'msg_text': $('#msg_text').val()},
@@ -36,7 +36,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-var csrftoken = getCookie('csrftoken');
 
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
@@ -49,3 +48,6 @@ $.ajaxSetup({
         }
     }
 });
+
+autoscroll();
+var csrftoken = getCookie('csrftoken');

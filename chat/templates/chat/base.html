@@ -82,7 +82,8 @@
                 {% empty %}
                     <div class="jumbotron">
                         <h1 class="display-3">Histoty is empty!</h1>
-                        <p class="lead">There are no new messages today? No problem, just type something and some random pokemon
+                        <p class="lead">There are no new messages today? No problem, just type something and some random
+                            pokemon
                             definitly answer you.
                             I promise you!</p>
                         <img src="{% static 'img/PikachuWellcome.png' %}" height="182px" width="342px">
@@ -94,16 +95,16 @@
 </div>
 
 <div class="navbar-fixed-bottom row-fluid">
-    <div class="navbar-inner">
-        <div class="container">
+    <div class="container">
+        <form id="chat-form" method="post" action="/proccess_msg/">
             <div class="input-group input-group-lg">
                 <span class="input-group-addon" id="basic-addon1">{{ user }}:</span>
                 <input type="text" class="form-control" id="msg_text" name='msg-text' placeholder="Write here...">
                 <span class="input-group-btn">
-                <button class="btn btn-warning" id="send_text" type="button">Send!</button>
-            </span>
+                    <button class="btn btn-warning" id="send_text" type="submit">Send!</button>
+                </span>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
