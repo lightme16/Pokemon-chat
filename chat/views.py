@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.template.loader import render_to_string
+
 from chat.models import Chat
 from untitled import settings
 
@@ -17,7 +19,7 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 # Redirect to a success page.
-                return HttpResponseRedirect('/chatroom/')
+                return HttpResponseRedirect('/get_messages/')
             else:
                 # Return a 'disabled account' error message
                 return HttpResponseRedirect("Account is not active at the moment.")
@@ -32,17 +34,24 @@ def logout_user(request):
     return HttpResponseRedirect('/login/')
 
 @login_required
-def chatroom(request):
+def get_messages(request):
     messages = Chat.objects.all()
-    return render(request, 'chat/base.html', {'messages': messages, 'user': request.user.username})
+    return render(request, 'chat/base.html', {'messages': messages})
+
+def get_messagesJSON(request):
+    messages = Chat.objects.all()
+    return JsonResponse({'messages': render_to_string('chat/messages.html', {'messages': messages})})
 
 @login_required
-def proccess_msg(request):
+def process_msg(request):
     if request.is_ajax():
-        msg = request.POST.get('msg_text', None)
+        msg = request.POST.get('new_msg', None)
         if msg:
             chat = Chat(user=request.user, message=msg)
             chat.save()
-            return JsonResponse({'msg': msg, 'user': chat.user.username})
+
+            messages = Chat.objects.all()
+            rendered = render_to_string('chat/messages.html', {'messages': messages})
+            return JsonResponse({'messages': rendered})
 
 

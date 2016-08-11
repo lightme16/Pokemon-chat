@@ -7,18 +7,33 @@ function autoscroll () {
 $('#chat-form').on('submit', function (event) {
     event.preventDefault();
 
+
      $.ajax({
-        url: '/proccess_msg/',
+        url: '/process_msg/',
         type: 'POST',
-        data: {'msg_text': $('#msg_text').val()},
+        data: {'new_msg': $('#new_msg').val()},
 
         success: function (json) {
-            $("#msg_text").val('');
             autoscroll();
-            location.reload();
+            //location.reload();
+            $('#new_msg').val('');
+            $('#msg_list').val('');
+            $('#msg_list').html(json['messages']);
+            autoscroll();
         }
     })
 });
+
+function getNewMessages() {
+    $.get('/get_messagesJSON/', function (json) {
+        $('#msg_list').html(json['messages']);
+        autoscroll();
+    })
+}
+
+refreshTimer = setInterval(getNewMessages, 2000);
+
+
 
 // using jQuery
 function getCookie(name) {
