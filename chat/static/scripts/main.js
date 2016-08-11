@@ -1,41 +1,21 @@
-function autoscroll () {
-    $(document).ready(function(){
-    $('#msg_list').animate({
-    scrollTop: $('#msg_list').get(0).scrollHeight}, 1);
-});};
+// Scroll down to see last messages at the botton of the page
+function autoscroll() {
+    $(document).ready(function () {
+        $('#msg_list').animate({
+            scrollTop: $('#msg_list').get(0).scrollHeight
+        }, 1);
+    });
+}
 
-$('#chat-form').on('submit', function (event) {
-    event.preventDefault();
-
-
-     $.ajax({
-        url: '/process_msg/',
-        type: 'POST',
-        data: {'new_msg': $('#new_msg').val()},
-
-        success: function (json) {
-            autoscroll();
-            //location.reload();
-            $('#new_msg').val('');
-            $('#msg_list').val('');
-            $('#msg_list').html(json['messages']);
-            autoscroll();
-        }
-    })
-});
-
+// Live tracking for new messages
 function getNewMessages() {
-    $.get('/get_messagesJSON/', function (json) {
+    $.get('/get_new_messages/', function (json) {
         $('#msg_list').html(json['messages']);
         autoscroll();
     })
 }
 
-refreshTimer = setInterval(getNewMessages, 2000);
-
-
-
-// using jQuery
+// Getting cookies
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -56,13 +36,35 @@ function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
+
+// Send new message and save it to the Django model
+$('#chat-form').on('submit', function (event) {
+    event.preventDefault();
+
+    $.ajax({
+        url: '/save_new_msg/',
+        type: 'POST',
+        data: {'new_msg': $('#new_msg').val()},
+
+        success: function (json) {
+            autoscroll();
+            //location.reload();
+            $('#new_msg').val('');
+            $('#msg_list').val('').html(json['messages']);
+            autoscroll();
+        }
+    })
+});
+
+// Ajax setup
 $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
+    beforeSend: function (xhr, settings) {
         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
     }
 });
 
-autoscroll();
 var csrftoken = getCookie('csrftoken');
+refreshTimer = setInterval(getNewMessages, 2000); // Timer for chat's live updating
+autoscroll();

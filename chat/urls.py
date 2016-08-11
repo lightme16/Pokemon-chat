@@ -4,8 +4,8 @@ from . import views
 urlpatterns = [
     url(r'^login/$', views.login_user, name='login'),
     url(r'^logout/$', views.logout_user, name='logout'),
-    url(r'^get_messages/$', views.get_messages, name='get_messages'),
-    url(r'^process_msg/$', views.process_msg, name='process_msg'),
-    url(r'^get_messagesJSON/$', views.get_messagesJSON, name='get_messagesJSON'),
+    url(r'^homepage/$', views.homepage, name='homepage'),
+    url(r'^save_new_msg/$', views.save_new_msg, name='save_new_msg'),
+    url(r'^get_new_messages/$', views.get_new_messages, name='get_new_messages'),
 
 ]
