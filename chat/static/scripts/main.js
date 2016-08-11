@@ -4,7 +4,7 @@ function autoscroll () {
     scrollTop: $('#msg_list').get(0).scrollHeight}, 1);
 });};
 
-autoscroll()
+autoscroll();
 
 $('#send_text').on('click',function () {
     $.ajax({
@@ -13,7 +13,7 @@ $('#send_text').on('click',function () {
         data: {'msg_text': $('#msg_text').val()},
 
         success: function (json) {
-            $("#msg_text").val('')
+            $("#msg_text").val('');
             autoscroll();
             location.reload();
         }

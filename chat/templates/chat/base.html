@@ -5,42 +5,46 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="{% static 'favicon.png' %}">
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
     <title>Fancy chat</title>
-    <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'base_style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/base_style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 
 <body>
 
 <div class="container">
-      <nav class="navbar navbar-light bg-faded" id="navbar">
-        <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header">
-          &#9776;
+    <nav class="navbar navbar-light bg-faded" id="navbar">
+        <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header"
+                aria-controls="navbar-header">
+            &#9776;
         </button>
         <div class="collapse navbar-toggleable-xs" id="navbar-header">
-           <a class="navbar-brand" href="#"><img src="{% static 'pokeball.png' %}" height=30 width=41></a>
-          <ul class="nav navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-          </ul>
-          <form class="form-inline pull-xs-right">
-            <input class="form-control" id="nav-input" type="text" placeholder="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
+            <a class="navbar-brand" href="#"><img src="{% static 'img/pokeball.png' %}" height=30 width=41></a>
+            <ul class="nav navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+            <form class="form-inline pull-xs-right" action="/logout/">
+                <input class="form-control" id="nav-input" type="text" placeholder="Search">
+                <button class="btn btn-outline-warning" type="submit"><span class="glyphicon glyphicon-log-in"></span>
+                    Logout
+                </button>
+            </form>
         </div>
-      </nav> <!-- /navbar -->
+    </nav> <!-- /navbar -->
 </div>
 
 <div class="container">
@@ -48,44 +52,61 @@
         <div class="col-xs-12" id="scrolable">
             <ul class="media-list pre-scrollable" id="msg_list">
                 {% for item in messages %}
-                        {% if item.user == request.user %}
-                            <li class="media" id="media-l">
+                    {% if item.user == request.user %}
+                        <li class="media" id="media-l">
                             <div class="media-left ">
                                 <a href="#">
-                                    <img class="media-object img-thumbnail" src="{% static 'thumbnail1.jpg' %}">
+                                    <img class="media-object img-thumbnail" src="{% static 'img/thumbnail1.jpg' %}">
                                 </a>
                             </div>
-                               <div class="media-body">
-                                    <h4 class="media-heading">{{ item.user }}</h4><small><i>{{ item.date }}</i></small>
-                                    <p>{{ item.message }}</p>
-                                </div>
-                            </li>
-                        {% else %}
-                            <li class="media" id="media-r">
+                            <div class="media-body">
+                                <h4 class="media-heading">{{ item.user }}</h4>
+                                <small><i>{{ item.date }}</i></small>
+                                <p>{{ item.message }}</p>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="media" id="media-r">
                             <div class="media-body text-right">
-                                    <h4 class="media-heading">{{ item.user }}</h4><small><i>{{ item.date }}</i></small>
+                                <h4 class="media-heading">{{ item.user }}</h4>
+                                <small><i>{{ item.date }}</i></small>
                                 <p>{{ item.message }}</p>
                             </div>
                             <div class="media-right ">
                                 <a href="#">
-                                    <img class="media-object img-thumbnail" src="{% static 'thumbnail2.jpg' %}">
+                                    <img class="media-object img-thumbnail" src="{% static 'img/thumbnail2.jpg' %}">
                                 </a>
                             </div>
-                            </li>
-                        {% endif %}
+                        </li>
+                    {% endif %}
+                {% empty %}
+                    <div class="jumbotron">
+                        <h1 class="display-3">Histoty is empty!</h1>
+                        <p class="lead">There are no new messages today? No problem, just type something and some random pokemon
+                            definitly answer you.
+                            I promise you!</p>
+                        <img src="{% static 'img/PikachuWellcome.png' %}" height="182px" width="342px">
+                    </div>
                 {% endfor %}
             </ul>
         </div>
     </div>
 </div>
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon" id="basic-addon1">{{ user }}:</span>
-        <input type="text" class="form-control" id="msg_text" name='msg-text' placeholder="Write here...">
-        <span class="input-group-btn">
+
+<div class="navbar-fixed-bottom row-fluid">
+    <div class="navbar-inner">
+        <div class="container">
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon" id="basic-addon1">{{ user }}:</span>
+                <input type="text" class="form-control" id="msg_text" name='msg-text' placeholder="Write here...">
+                <span class="input-group-btn">
                 <button class="btn btn-warning" id="send_text" type="button">Send!</button>
             </span>
+            </div>
+        </div>
     </div>
+</div>
 
-<script src="{% static 'main.js' %}"></script>
+<script src="{% static 'scripts/main.js' %}"></script>
 </body>
 </html>
