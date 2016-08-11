@@ -1,7 +1,74 @@
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="username">
-    <input type="password" name="password">
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="{% static 'favicon.png' %}">
+    <title>Wellcome</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link href="{% static 'base_style.css' %}" rel="stylesheet">
+</head>
+<body id="signin-body">
 
-    <button type="submit">Enter</button>
-</form>
+<div id="registerModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Testing </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <strong>Attention!</strong> You can test the app using next credentials:
+                </div>
+                <a class="btn btn-primary" role="button" data-toggle="collapse" href="#credentials"
+                   aria-expanded="false" aria-controls="collapseExample">
+                    First credentials
+                </a>
+                    <div class="collapse" id="credentials">
+                        <strong>Login:</strong>test1<br>
+                        <strong>Password:</strong>test1_pass
+                        <br><br>
+                        <strong>Login:</strong>test2<br>
+                        <strong>Password:</strong>test2_pass
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <form class="form-signin" method="post">{% csrf_token %}
+        <h2 class="text-center" style="text-align:center">Wellcome!</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="text" id="inputEmail" class="form-control" placeholder="Email address" name="username" required
+               autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <a class="btn btn-lg btn-success btn-block" id="registerButton">Register</a>
+        <button class="btn btn btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{% static 'bootstrap.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('#registerButton').click(function () {
+            $('#registerModal').modal('toggle');
+        });
+    })
+</script>
+</body>
+</html>

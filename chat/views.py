@@ -1,12 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
-
-# Create your views here.
-from django.utils import timezone
-
-from chat.forms import ChatForm
+from django.http import JsonResponse
+from django.shortcuts import render
 from chat.models import Chat
 from untitled import settings
 
@@ -31,23 +27,22 @@ def login_user(request):
     else:
         return render(request, 'chat/login.html')
 
-
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect('/login/')
 
 @login_required
 def chatroom(request):
-#    chat = get_object_or_404(Chat)
-    if request.method == 'POST':
-        form = ChatForm(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.user = request.user
-            form.created_date = timezone.now()
-            form.save()
-            return redirect('chatroom')
-    else:
-        form = ChatForm()
-        chat = Chat.objects.all()
-        return render(request,'chat/chatroom.html', {'form': form, 'chat': chat})
+    messages = Chat.objects.all()
+    return render(request, 'chat/base.html', {'messages': messages, 'user': request.user.username})
+
+@login_required
+def proccess_msg(request):
+    if request.is_ajax():
+        msg = request.POST.get('msg_text', None)
+        if msg:
+            chat = Chat(user=request.user, message=msg)
+            chat.save()
+            return JsonResponse({'msg': msg, 'user': chat.user.username})
+
+
