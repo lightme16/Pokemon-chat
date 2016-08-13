@@ -1,6 +1,7 @@
 {% load static %}
                 {% for post in messages %}
-                    {% if post.user == request.user %}
+                    {% if post.user.id == request_user_id %}
+                        <!-- style active user message -->
                         <li class="media" id="media-l">
                             <div class="media-left ">
                                 <a href="#">
@@ -8,12 +9,13 @@
                                 </a>
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">{{ post.user }}</h4>
+                                <h4 class="media-heading">{{ post.user }}<small> (You)</small></h4>
                                 <small><i>{{ post.date }}</i></small>
                                 <p>{{ post.message }}</p>
                             </div>
                         </li>
                     {% else %}
+                        <!-- style othes user's messages -->
                         <li class="media" id="media-r">
                             <div class="media-body text-right">
                                 <h4 class="media-heading">{{ post.user }}</h4>

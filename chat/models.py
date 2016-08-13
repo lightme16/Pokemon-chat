@@ -10,3 +10,4 @@ class Chat(models.Model):
     date = models.DateTimeField(default=timezone.now())
     user = models.ForeignKey(User)
     message = models.CharField(max_length=200)
+

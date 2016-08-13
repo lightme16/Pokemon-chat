@@ -42,7 +42,7 @@ def homepage(request):
 @login_required
 def get_new_messages(request):
     messages = Chat.objects.all()
-    return JsonResponse({'messages': render_to_string('chat/messages.html', {'messages': messages})})
+    return JsonResponse({'messages': render_to_string('chat/messages.html', {'messages': messages, 'request_user_id': request.user.id})})
 
 
 @login_required
@@ -52,3 +52,9 @@ def save_new_msg(request):
         chat = Chat(user=request.user, message=msg)
         chat.save()
     return HttpResponse('')  # just empty response in order to not cause an ajax error
+
+
+@login_required
+def reset(request):
+    Chat.objects.all().delete()
+    return HttpResponseRedirect('/homepage/')
