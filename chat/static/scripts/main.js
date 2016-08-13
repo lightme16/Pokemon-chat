@@ -66,5 +66,5 @@ $.ajaxSetup({
 });
 
 var csrftoken = getCookie('csrftoken');
-refreshTimer = setInterval(getNewMessages, 3000); // Timer for chat's live updating
+refreshTimer = setInterval(getNewMessages, 1500); // Timer for chat's live updating
 autoscroll();
