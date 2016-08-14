@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from django.shortcuts import render
 from untitled import settings
 from chat.models import Chat
+from django.contrib.auth.forms import UserCreationForm
 
 
 def login_user(request):
@@ -31,6 +32,14 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect('/login/')
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/login/')
+    return HttpResponse('Error durring registration!')
 
 
 @login_required
